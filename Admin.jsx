@@ -1,0 +1,9 @@
+import React, { useState } from 'react'
+import client, { setAuth } from '../api'
+export default function Admin(){
+  const [email,setEmail]=useState(''); const [password,setPassword]=useState(''); const [msg,setMsg]=useState(''); const [students,setStudents]=useState([])
+  async function login(e){ e.preventDefault(); try{ const res = await client.post('/api/login',{email,password}); if(res.data.token){ setAuth(res.data.token); localStorage.setItem('jc_token', res.data.token); setMsg('Logged in'); loadStudents() } else setMsg(JSON.stringify(res.data)) }catch(err){ setMsg(err.response?.data?.message||err.message) } }
+  async function loadStudents(){ try{ const res = await client.get('/api/admin/students'); setStudents(res.data.students||[]) }catch(e){ setMsg(e.response?.data?.message||e.message) } }
+  async function uploadCSV(e){ e.preventDefault(); const f=e.target.elements.csv.files[0]; if(!f){ setMsg('Select CSV'); return } const fd=new FormData(); fd.append('file', f); try{ const t=localStorage.getItem('jc_token'); setAuth(t); const res = await client.post('/api/admin/results/upload', fd); setMsg(JSON.stringify(res.data)); loadStudents() }catch(err){ setMsg(err.response?.data?.message||err.message) } }
+  return (<div><div className="card"><h3>Admin Login</h3><form onSubmit={login}><input value={email} onChange={e=>setEmail(e.target.value)} placeholder="email"/><br/><input value={password} onChange={e=>setPassword(e.target.value)} placeholder="password" type="password"/><br/><button type="submit">Login</button></form><div className="small">{msg}</div></div><div className="card"><h4>Students</h4>{students.map(s=>(<div key={s.id}>{s.name} ({s.email})</div>))}</div><div className="card"><h4>Upload CSV</h4><form onSubmit={uploadCSV}><input name="csv" type="file" accept=".csv"/><button>Upload</button></form></div></div>)
+}

@@ -1,0 +1,8 @@
+body{font-family:system-ui,Arial;margin:0;background:#f6f8fb;color:#0f172a}
+.header{padding:12px 18px;background:#0ea5a4;color:white;display:flex;justify-content:space-between;align-items:center}
+.header .brand{font-weight:700}
+.main{max-width:900px;margin:24px auto;padding:12px}
+.card{background:white;padding:16px;border-radius:8px;box-shadow:0 4px 14px rgba(2,6,23,0.06);margin-bottom:12px}
+input,button{padding:8px;border-radius:6px;border:1px solid #e6eef6;margin:6px 0}
+button{background:#0ea5a4;border:none;color:#012;padding:8px 12px;cursor:pointer}
+.small{color:#64748b;font-size:13px}
